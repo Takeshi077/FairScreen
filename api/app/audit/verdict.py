@@ -23,10 +23,7 @@ def _accuracy_lookup(db: Session, run_id: str) -> dict[tuple[str, str], Accuracy
 
 def _model_names(db: Session, run_id: str) -> dict[str, str]:
     rows = db.scalars(select(RunModel).where(RunModel.run_id == run_id))
-    names: dict[str, str] = {}
-    for row in rows:
-        names.setdefault(row.model_name, row.display_name)
-    return names
+    return {row.model_name: row.model_name for row in rows}
 
 
 def _chosen_mitigation(audits: list[AuditResult]) -> str | None:

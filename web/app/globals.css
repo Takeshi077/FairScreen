@@ -1,0 +1,132 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --canvas: #f4f0e7;
+  --surface: #fffdf8;
+  --surface-2: #ebe4d6;
+  --ink: #17211f;
+  --muted: #5d6b66;
+  --line: #d9d1c1;
+  --teal: #0d4f49;
+  --teal-strong: #083a36;
+  --teal-soft: #d7e7e2;
+  --amber: #b87813;
+  --amber-soft: #f6e5c4;
+  --coral: #b84e3c;
+  --coral-soft: #f5d9d2;
+  --blue: #2b6478;
+  --focus: #1f6f66;
+}
+
+.dark {
+  --canvas: #0e1513;
+  --surface: #141e1b;
+  --surface-2: #1d2a26;
+  --ink: #edf2ef;
+  --muted: #a5b5ae;
+  --line: #2e3d38;
+  --teal: #7fc7bb;
+  --teal-strong: #a7ded4;
+  --teal-soft: #173d37;
+  --amber: #e7b45a;
+  --amber-soft: #3a2d16;
+  --coral: #f08c75;
+  --coral-soft: #3e211c;
+  --blue: #7ab4c8;
+  --focus: #8fd8cb;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-teal: var(--teal);
+  --color-teal-strong: var(--teal-strong);
+  --color-teal-soft: var(--teal-soft);
+  --color-amber: var(--amber);
+  --color-amber-soft: var(--amber-soft);
+  --color-coral: var(--coral);
+  --color-coral-soft: var(--coral-soft);
+  --color-blue: var(--blue);
+  --font-serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  --font-sans: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--teal-soft);
+  color: var(--ink);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-serif);
+  letter-spacing: -0.02em;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+@keyframes soft-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+.skeleton {
+  animation: soft-pulse 1.6s ease-in-out infinite;
+  background: var(--surface-2);
+  border-radius: 0.5rem;
+}
+
+.chart-tooltip {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  color: var(--ink);
+  font-size: 0.8125rem;
+  padding: 0.55rem 0.7rem;
+  box-shadow: 0 12px 30px rgb(0 0 0 / 0.12);
+}
+
+.recharts-cartesian-axis-tick text {
+  fill: var(--muted);
+  font-size: 0.75rem;
+}
+
+.recharts-cartesian-grid line {
+  stroke: var(--line);
+}
+
+.recharts-default-legend {
+  font-size: 0.8rem;
+}
