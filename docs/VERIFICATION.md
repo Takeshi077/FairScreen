@@ -63,7 +63,34 @@ Dataset facts verified by tests:
 
 ## Phase 2
 
-Pending.
+Commands:
+
+```powershell
+.\.venv\Scripts\python.exe -m pytest api/tests/test_providers.py -q
+.\.venv\Scripts\python.exe -m ruff check api
+.\.venv\Scripts\python.exe -m mypy
+```
+
+Results:
+
+```text
+pytest: 25 passed
+ruff: All checks passed!
+mypy: Success: no issues found in 23 source files
+```
+
+Provider evidence:
+
+- Mock scores are deterministic for the same model, prompt, repeat and settings.
+- Repeat runs produce different seeded noise.
+- Tier means are ordered strong > average > weak by wide margins.
+- A planted 0.5 point gender bias produces exactly a 0.5 point matched gap when noise is disabled.
+- Skills-only reduces the planted gap; anonymization removes it.
+- OpenAI-compatible and Anthropic-compatible adapters were exercised through `httpx.MockTransport` with stubbed HTTP responses. This is stubbed verification, not a live API call.
+- Malformed JSON and HTTP 500 responses retry with backoff and then fail with a clear provider error.
+- Strict JSON validation rejects out-of-range scores, booleans, string scores, NaN, missing keys and empty reasons.
+- Cache key includes provider, model, prompt version, CV hash, prompt hash, repeat and temperature.
+- Budget guard raises before a call would exceed the cap.
 
 ## Phase 3
 
