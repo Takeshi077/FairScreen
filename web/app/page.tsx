@@ -124,6 +124,28 @@ export default function OverviewPage() {
             </div>
           ) : null}
 
+          {data.run.status === "running" || data.run.status === "pending" ? (
+            <div className="mb-6 rounded-xl border border-teal/40 bg-teal-soft/40 p-5 shadow-sm">
+              <div className="flex items-center justify-between gap-3 mb-2">
+                <div className="flex items-center gap-2">
+                  <div className="h-2.5 w-2.5 animate-pulse rounded-full bg-teal" />
+                  <span className="text-sm font-semibold text-ink">
+                    Audit In Progress ({data.progress.percent.toFixed(1)}%)
+                  </span>
+                </div>
+                <span className="text-xs text-muted font-mono">
+                  {data.progress.completed.toLocaleString()} / {data.progress.total.toLocaleString()} scores
+                </span>
+              </div>
+              <div className="h-2.5 w-full rounded-full bg-surface-2 overflow-hidden">
+                <div
+                  className="h-full bg-teal transition-all duration-300 rounded-full"
+                  style={{ width: `${Math.max(4, Math.min(100, data.progress.percent))}%` }}
+                />
+              </div>
+            </div>
+          ) : null}
+
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-sm text-muted">Report and data:</span>

@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 
-import { useDashboard } from "@/components/DashboardProvider";
 import { ShortlistChart, type ShortlistDatum } from "@/components/charts";
 import {
   Badge,

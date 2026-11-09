@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { useDashboard } from "@/components/DashboardProvider";
+import { NewRunModal } from "@/components/NewRunModal";
 import {
   Badge,
   Card,
@@ -22,6 +24,7 @@ function formatDate(value: string | null): string {
 
 export default function RunsPage() {
   const { runs, runId, loading, error, refresh, selectRun } = useDashboard();
+  const [modalOpen, setModalOpen] = useState(false);
   const router = useRouter();
 
   if (loading && runs.length === 0) {
@@ -43,9 +46,16 @@ export default function RunsPage() {
           <button
             type="button"
             onClick={() => void refresh()}
-            className="rounded-lg border border-line bg-surface px-3 py-1.5 text-xs font-semibold text-ink hover:border-teal/50"
+            className="rounded-lg border border-line bg-surface px-3 py-1.5 text-xs font-semibold text-ink hover:border-teal/50 transition"
           >
             Refresh list
+          </button>
+          <button
+            type="button"
+            onClick={() => setModalOpen(true)}
+            className="rounded-lg bg-teal px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-teal-strong transition dark:text-canvas"
+          >
+            + Launch New Audit
           </button>
         </div>
       </PageHeader>
@@ -125,6 +135,15 @@ export default function RunsPage() {
           </div>
         </Card>
       )}
+
+      <NewRunModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onCreated={(newRunId) => {
+          void refresh();
+          selectRun(newRunId);
+        }}
+      />
     </>
   );
 }

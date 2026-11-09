@@ -2,8 +2,8 @@
 
 import { useMemo, useState } from "react";
 
-import { useDashboard } from "@/components/DashboardProvider";
 import { GapWhiskerChart, type WhiskerDatum } from "@/components/charts";
+import { PairInspectorModal } from "@/components/PairInspectorModal";
 import {
   Badge,
   Card,
@@ -14,7 +14,7 @@ import {
   PageHeader,
 } from "@/components/ui";
 import { fmt, signed } from "@/lib/format";
-import type { Dashboard } from "@/lib/types";
+import type { AuditRow, Dashboard } from "@/lib/types";
 
 function GapsContent({ data }: { data: Dashboard }) {
   const models = data.verdict.models.map((model) => ({
@@ -22,6 +22,7 @@ function GapsContent({ data }: { data: Dashboard }) {
     label: model.display_name,
   }));
   const [model, setModel] = useState(models[0]?.value ?? "");
+  const [inspectPair, setInspectPair] = useState<AuditRow | null>(null);
   const selected = models.some((item) => item.value === model)
     ? model
     : (models[0]?.value ?? "");
@@ -126,6 +127,7 @@ function GapsContent({ data }: { data: Dashboard }) {
                 <th className="px-4 py-3 text-right font-semibold">Effect size</th>
                 <th className="px-4 py-3 text-right font-semibold">Noise floor</th>
                 <th className="px-4 py-3 font-semibold">Flag</th>
+                <th className="px-4 py-3 text-right font-semibold">Evidence</th>
               </tr>
             </thead>
             <tbody>
@@ -145,12 +147,33 @@ function GapsContent({ data }: { data: Dashboard }) {
                       {row.significant ? "Outside CI" : "Inside CI"}
                     </Badge>
                   </td>
+                  <td className="px-4 py-3 text-right">
+                    <button
+                      type="button"
+                      onClick={() => setInspectPair(row)}
+                      className="inline-flex items-center gap-1 rounded-md border border-line bg-surface px-2.5 py-1 text-xs font-semibold text-teal hover:border-teal/50 hover:bg-teal-soft/30 transition"
+                    >
+                      Inspect CVs &rarr;
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       </Card>
+
+      <PairInspectorModal
+        isOpen={inspectPair !== null}
+        onClose={() => setInspectPair(null)}
+        runId={data.run.id}
+        model={inspectPair?.model ?? selected}
+        mitigation={inspectPair?.mitigation ?? "none"}
+        attribute={inspectPair?.attribute ?? ""}
+        groupA={inspectPair?.group_a ?? ""}
+        groupB={inspectPair?.group_b ?? ""}
+        title={inspectPair ? `${inspectPair.comparison_label} (${inspectPair.model})` : ""}
+      />
     </>
   );
 }

@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 
-import { useDashboard } from "@/components/DashboardProvider";
 import { AccuracyChart, type AccuracyDatum } from "@/components/charts";
 import {
   Badge,

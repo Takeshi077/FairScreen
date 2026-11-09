@@ -165,3 +165,49 @@ export interface RunsResponse {
   limit: number;
   offset: number;
 }
+
+export interface MatchedPairItem {
+  base_cv_id: number;
+  role: string;
+  tier: string;
+  attribute: string;
+  group_a: string;
+  group_b: string;
+  label_a: string;
+  label_b: string;
+  variant_id_a: number;
+  variant_id_b: number;
+  score_a: number;
+  score_b: number;
+  gap: number;
+  text_a: string;
+  text_b: string;
+}
+
+export interface MatchedPairsResponse {
+  run_id: string;
+  is_simulated: boolean;
+  model: string;
+  mitigation: string;
+  attribute: string;
+  group_a: string;
+  group_b: string;
+  items: MatchedPairItem[];
+  total: number;
+  limit: number;
+  offset: number;
+}
+
+export interface CreateRunInput {
+  name: string;
+  provider: string;
+  models?: string[];
+  mitigations?: Mitigation[];
+  seed?: number;
+  repeats?: number;
+  budget_cap_usd?: number;
+  shortlist_cutoff?: number;
+  temperature?: number;
+  bases_per_role?: number;
+  execute?: boolean;
+}

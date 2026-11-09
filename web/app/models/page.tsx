@@ -2,8 +2,7 @@
 
 import { useMemo } from "react";
 
-import { useDashboard } from "@/components/DashboardProvider";
-import { ModelComparisonChart } from "@/components/charts";
+import { ModelComparisonChart, type ModelComparisonDatum } from "@/components/charts";
 import {
   Badge,
   Card,
@@ -33,8 +32,8 @@ function ModelComparisonContent({ data }: { data: Dashboard }) {
     return seen;
   }, [baseline, models]);
 
-  const chartData = labels.map((label) => {
-    const entry: Record<string, string | number> = { label };
+  const chartData: ModelComparisonDatum[] = labels.map((label) => {
+    const entry: ModelComparisonDatum = { label };
     for (const model of models) {
       const row = baseline.find(
         (item) => item.model === model && item.comparison_label === label,

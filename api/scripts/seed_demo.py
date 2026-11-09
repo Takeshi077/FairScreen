@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import sys
 from pathlib import Path
+from typing import Any, cast
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "api"))
@@ -66,7 +67,7 @@ def main() -> None:
                     "chosen_mitigation": model["chosen_mitigation"],
                     "summary": model["summary"],
                 }
-                for model in verdict["models"]
+                for model in cast(list[dict[str, Any]], verdict["models"])
             ],
         }
         print(json.dumps(summary, indent=2))

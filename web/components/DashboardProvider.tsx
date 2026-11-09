@@ -68,13 +68,8 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (!runId) {
-      setData(null);
-      return;
-    }
+    if (!runId) return;
     let cancelled = false;
-    setLoading(true);
-    setError(null);
     async function load() {
       try {
         const dashboard = await fetchDashboard(runId as string);
@@ -94,8 +89,30 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     };
   }, [runId]);
 
+  const runStatus = data?.run.status;
+
+  // Live polling for running or pending audits
+  useEffect(() => {
+    if (!runId || !runStatus) return;
+    if (runStatus !== "running" && runStatus !== "pending") return;
+
+    const timer = setInterval(async () => {
+      try {
+        const dashboard = await fetchDashboard(runId);
+        setData(dashboard);
+        setLastUpdated(new Date());
+      } catch {
+        // Continue polling
+      }
+    }, 2500);
+
+    return () => clearInterval(timer);
+  }, [runId, runStatus]);
+
   const selectRun = useCallback((nextRunId: string) => {
     setRunId(nextRunId);
+    setLoading(true);
+    setError(null);
   }, []);
 
   const refresh = useCallback(async () => {
