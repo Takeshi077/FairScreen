@@ -8,7 +8,7 @@ The repository did not contain `docs/PRD.md` at the start of work. The only prod
 
 ## D002: Python interpreter
 
-The spec asks for Python 3.11. The available interpreter is Python 3.14.5. Code targets 3.11 syntax and avoids 3.14-only features. Dependency versions are pinned to versions that install on both. Verification is performed on 3.14.5.
+The spec asks for Python 3.11. The available interpreter is Python 3.14.5. Code targets 3.11 syntax and avoids 3.14-only features. Dependency versions are pinned to versions that install on both. Verification is performed on 3.14.5. Mypy uses `python_version = "3.14"` because the installed NumPy type stubs use syntax that mypy rejects under a 3.11 target.
 
 ## D003: Origin names hold gender constant
 

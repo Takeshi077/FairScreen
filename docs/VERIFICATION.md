@@ -124,7 +124,32 @@ Runner evidence:
 
 ## Phase 4
 
-Pending.
+Commands:
+
+```powershell
+.\.venv\Scripts\python.exe -m pytest api/tests/test_audit_stats.py api/tests/test_audit_engine.py -q
+.\.venv\Scripts\python.exe -m pytest -q
+.\.venv\Scripts\python.exe -m ruff check api
+.\.venv\Scripts\python.exe -m mypy
+```
+
+Results:
+
+```text
+audit tests: 17 passed
+full suite: 64 passed
+ruff: All checks passed!
+mypy: Success: no issues found in 27 source files
+```
+
+Audit evidence:
+
+- Known-answer tests cover mean gap, bootstrap CI, paired permutation p-values, Cohen's dz, Holm adjustment, shortlist ratio, repeat noise floor, pairwise ranking accuracy, and bootstrap reduction.
+- A synthetic dataset with a planted 0.5 point woman-versus-man gap across 40 matched pairs produced a mean gap near -0.50, a 95 percent CI entirely below zero, a significant audit flag, an adjusted p-value below 0.01, and a large negative effect size.
+- A zero-bias synthetic dataset did not produce a significant flag, its CI included zero, and its mean gap stayed inside the repeat noise floor.
+- A synthetic baseline with a 0.5 point gap and a combined mitigation with no gap produced a supported reduction with a CI above zero. The verdict marked the gap found, the fix worked, and quality kept.
+- Holm adjustment is applied across all comparisons for a mitigation, pooling attributes and models.
+- Verdict logic follows D006: every significant baseline comparison must have a supported reduction and a mitigation CI that includes zero.
 
 ## Phase 5
 

@@ -29,7 +29,7 @@ ignore = ["B008", "SIM108"]
 "api/tests/*" = ["B011"]
 
 [tool.mypy]
-python_version = "3.11"
+python_version = "3.14"
 mypy_path = "api"
 files = ["api/app", "api/scripts"]
 exclude = ["api/tests"]
