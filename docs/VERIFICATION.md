@@ -94,7 +94,33 @@ Provider evidence:
 
 ## Phase 3
 
-Pending.
+Commands:
+
+```powershell
+.\.venv\Scripts\python.exe -m pytest api/tests/test_runner.py -q
+.\.venv\Scripts\python.exe -m pytest -q
+.\.venv\Scripts\python.exe -m ruff check api
+.\.venv\Scripts\python.exe -m mypy
+```
+
+Results:
+
+```text
+test_runner: 9 passed
+full suite: 47 passed
+ruff: All checks passed!
+mypy: Success: no issues found in 24 source files
+```
+
+Runner evidence:
+
+- Runs build one row per model and mitigation combination.
+- A completed run of 10 variants x 2 repeats produced 20 scores and progress of 100 percent.
+- Prompt text, model, temperature, mitigation, reason, latency and timestamp are stored on each score.
+- Anonymization runs receive text whose first line is `Candidate` and with no graduation or years-of-experience lines.
+- Resume skips pre-existing scores and only scores the missing rows.
+- A second run with the same model, prompt, variant, repeat and temperature made zero provider calls and reused all 20 cached scores.
+- A priced fake provider with a $1.00 cap aborted after one $0.60 call, before the second call would have exceeded the cap. The run status was `aborted`, cost was $0.60, and only one score existed.
 
 ## Phase 4
 
