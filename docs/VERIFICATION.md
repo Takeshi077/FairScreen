@@ -36,7 +36,30 @@ GNU make was installed with winget (`ezwinports.make` 4.4.1). Each new shell may
 
 ## Phase 1
 
-Pending.
+Commands:
+
+```powershell
+.\.venv\Scripts\python.exe -m pytest api/tests/test_generator.py api/tests/test_anonymizer.py -q
+.\.venv\Scripts\python.exe -m ruff check api
+.\.venv\Scripts\python.exe api/scripts/preview_pairs.py --pairs 2 --bases-per-role 6
+```
+
+Results:
+
+```text
+pytest: 11 passed
+ruff: All checks passed!
+preview: printed matched pairs across roles and attributes with only the intended lines marked as changes.
+```
+
+Dataset facts verified by tests:
+
+- 6 roles, 33 base CVs per role, 11 per tier, 198 base CVs total.
+- 10 variants per base: 2 gender, 5 origin, 3 age. 1,980 variants total.
+- Gender and origin pairs differ only in the full name line.
+- Age pairs differ only in the years-of-experience line and graduation-year line.
+- Anonymizing every variant removes names, pronouns, four-digit years, graduation years, and age cues.
+- Anonymized variants within one base and attribute are identical, so identity signal cannot leak.
 
 ## Phase 2
 
