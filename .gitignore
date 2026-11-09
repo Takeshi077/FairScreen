@@ -1,0 +1,45 @@
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+*.egg-info/
+
+# Generated data and databases
+data/*
+!data/.gitkeep
+*.db
+*.sqlite
+*.sqlite3
+*.csv
+!docs/**/*.csv
+
+# Web
+web/node_modules/
+web/.next/
+web/out/
+web/coverage/
+web/test-results/
+web/playwright-report/
+web/.eslintcache
+web/next-env.d.ts
+web/tsconfig.tsbuildinfo
+
+# Logs and local tooling
+*.log
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
