@@ -50,9 +50,7 @@ def test_mock_is_deterministic(dataset):
 
 
 def test_mock_repeats_differ(dataset):
-    provider = MockProvider(
-        "Mock-Screen-A", MockProfile(name="test", noise=0.2, bias_scale=0)
-    )
+    provider = MockProvider("Mock-Screen-A", MockProfile(name="test", noise=0.2, bias_scale=0))
     variant = dataset[0].variants[0]
     scores = {
         provider.score(variant.text, "prompt", _settings("x", repeat=repeat)).score

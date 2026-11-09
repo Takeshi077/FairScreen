@@ -26,9 +26,7 @@ _ORIGIN_LOOKUP = {
     for group, names in ORIGIN_NAMES.items()
     for first, surname in names
 }
-_GENDER_LOOKUP = {
-    first.lower(): group for group, names in GENDER_NAMES.items() for first in names
-}
+_GENDER_LOOKUP = {first.lower(): group for group, names in GENDER_NAMES.items() for first in names}
 _AGE_RE = re.compile(r"(?im)^\s*years?\s+of\s+experience\s*:\s*(\d+)\s*$")
 _BULLET_RE = re.compile(r"^-\s+(.*)$")
 
@@ -127,9 +125,7 @@ def _content_key(cv_text: str) -> str:
 
 
 def _quality_signal(cv_text: str) -> float:
-    bullets = [
-        match.group(1) for line in cv_text.splitlines() if (match := _BULLET_RE.match(line))
-    ]
+    bullets = [match.group(1) for line in cv_text.splitlines() if (match := _BULLET_RE.match(line))]
     metric_count = sum(1 for bullet in bullets if re.search(r"\d", bullet))
     strong_count = sum(
         1
@@ -142,13 +138,7 @@ def _quality_signal(cv_text: str) -> float:
         if any(bullet.lower().startswith(verb.lower() + " ") for verb in WEAK_VERBS)
     )
     skills = _skill_count(cv_text)
-    quality = (
-        4.30
-        + 0.42 * metric_count
-        + 0.32 * strong_count
-        - 0.32 * weak_count
-        + 0.035 * skills
-    )
+    quality = 4.30 + 0.42 * metric_count + 0.32 * strong_count - 0.32 * weak_count + 0.035 * skills
     jitter = ((_stable_int(_content_key(cv_text)) % 10_000) / 10_000 - 0.5) * 0.24
     return min(9.75, max(0.20, quality + jitter))
 
@@ -180,9 +170,7 @@ class MockProvider(Provider):
 
     def __init__(self, model_name: str, profile: MockProfile | None = None) -> None:
         self.model_name = model_name
-        self.profile = profile or SIMULATED_PROFILES.get(
-            model_name, MockProfile(name=model_name)
-        )
+        self.profile = profile or SIMULATED_PROFILES.get(model_name, MockProfile(name=model_name))
 
     def score(self, cv_text: str, prompt: str, settings: ScoreSettings) -> ProviderResult:
         quality = _quality_signal(cv_text)
@@ -204,9 +192,9 @@ class MockProvider(Provider):
         rng = random.Random(seed)
         noise = rng.gauss(0.0, noise_sd) if noise_sd > 0 else 0.0
         score = round(min(9.95, max(0.05, quality + bias + noise)), 3)
-        latency = self.profile.latency_base_ms + (_stable_int(seed) % (
-            self.profile.latency_spread_ms + 1
-        ))
+        latency = self.profile.latency_base_ms + (
+            _stable_int(seed) % (self.profile.latency_spread_ms + 1)
+        )
         if settings.mitigation == "none":
             reason = "Simulated assessment based on evidence strength and stated experience."
         else:

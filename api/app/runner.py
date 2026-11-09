@@ -190,9 +190,7 @@ def execute_run(
             existing = {
                 (variant_id, repeat)
                 for variant_id, repeat in db.execute(
-                    select(Score.variant_id, Score.repeat).where(
-                        Score.run_model_id == run_model.id
-                    )
+                    select(Score.variant_id, Score.repeat).where(Score.run_model_id == run_model.id)
                 )
             }
             for variant in variants:
@@ -302,9 +300,7 @@ def progress_for_run(db: Session, run: Run) -> dict[str, Any]:
     for run_model in run_models:
         model_count = (
             db.scalar(
-                select(func.count())
-                .select_from(Score)
-                .where(Score.run_model_id == run_model.id)
+                select(func.count()).select_from(Score).where(Score.run_model_id == run_model.id)
             )
             or 0
         )

@@ -82,9 +82,7 @@ def list_runs(
     variant_count = db.scalar(select(func.count()).select_from(CVVariant)) or 0
     total = db.scalar(select(func.count()).select_from(Run)) or 0
     runs = list(
-        db.scalars(
-            select(Run).order_by(Run.created_at.desc(), Run.id).limit(limit).offset(offset)
-        )
+        db.scalars(select(Run).order_by(Run.created_at.desc(), Run.id).limit(limit).offset(offset))
     )
     return {
         "items": [run_base_payload(db, run, variant_count=variant_count) for run in runs],

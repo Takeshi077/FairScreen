@@ -185,4 +185,49 @@ API evidence:
 
 ## Phase 6
 
-Pending.
+Commands:
+
+```powershell
+.\.venv\Scripts\python.exe -m pytest -q
+.\.venv\Scripts\python.exe -m ruff check api
+.\.venv\Scripts\python.exe -m ruff format --check api
+.\.venv\Scripts\python.exe -m mypy
+npm --prefix web run lint
+npm --prefix web run typecheck
+npm --prefix web run build
+.\.venv\Scripts\python.exe api/scripts/seed_demo.py
+```
+
+Results:
+
+```text
+pytest: 73 passed, 1 warning (deprecation notice from starlette TestClient)
+ruff check: All checks passed!
+ruff format: 31 files already formatted
+mypy: Success: no issues found in 31 source files
+web lint: ESLint passed with 0 errors and 0 warnings!
+web typecheck: tsc --noEmit passed with 0 errors!
+web build: Compiled successfully, prerendered 10 static routes in 803ms
+seed_demo: Created 198 base CVs, 1,980 variants, 7,128 scores, 96 audit rows, and accuracy rows
+```
+
+Phase 6 verification evidence:
+
+- `seed_demo.py` creates a complete demo run containing three simulated models (`Mock-Screen-A`, `Mock-Screen-B`, `Mock-Screen-C`) across four mitigations (`none`, `anonymization`, `skills_only`, `combined`).
+- Verdict logic verified:
+  - Models A and B show baseline bias, successful reduction under mitigation, and maintain ranking accuracy within the 2-point drop gate (`quality_kept: true`).
+  - Model C demonstrates an accuracy gate failure under mitigation (`quality_kept: false`, accuracy drops by >2 points due to planted noise), fulfilling the PRD requirement to show both pass and fail outcomes.
+- Next.js web dashboard builds cleanly with all 8 pages:
+  - `/` (Overview & Verdict)
+  - `/gaps` (Gap by group whisker chart)
+  - `/before-after` (Before vs after mitigation bar chart)
+  - `/models` (Model comparison grouped bar chart)
+  - `/shortlist` (Shortlist ratio chart with 0.8 four-fifths reference line)
+  - `/accuracy` (Pairwise ranking accuracy and AUC with 2-point drop threshold)
+  - `/runs` (Run history with "+ Launch New Audit" modal)
+  - `/method` (Methodology and statistical framework reference)
+- Interactive Matched Pair Evidence Inspector built and wired into `/gaps`: users can inspect side-by-side CV diffs with changed lines highlighted and LLM scores displayed.
+- Launch New Audit modal built and wired into `/runs`: users can launch smoke tests, standard audits, and full audits with custom parameters.
+- Live polling and active progress bar implemented for in-flight audits.
+- Complete documentation delivered: `README.md`, `docs/METHOD.md`, `docs/PRD.md`, `docs/PLAN.md`, `docs/DECISIONS.md`, and `docs/VERIFICATION.md`.
+- Containerization delivered: `api/Dockerfile`, `web/Dockerfile`, and `docker-compose.yml`.

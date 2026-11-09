@@ -27,9 +27,7 @@ _PRONOUN_RE = re.compile(
     re.IGNORECASE,
 )
 _GRADUATION_RE = re.compile(r"(?im)^\s*graduated\s*:\s*\d{4}\s*$")
-_YEARS_EXPERIENCE_RE = re.compile(
-    r"(?im)^\s*years?\s+of\s+experience\s*:\s*\d+\s*(?:years?)?\s*$"
-)
+_YEARS_EXPERIENCE_RE = re.compile(r"(?im)^\s*years?\s+of\s+experience\s*:\s*\d+\s*(?:years?)?\s*$")
 _AGE_LINE_RE = re.compile(r"(?im)^\s*(?:age|aged|date\s+of\s+birth|dob)\s*:?.*$")
 _AGE_CUE_RE = re.compile(
     r"\b(?:aged?\s+\d{1,2}|\d{1,2}\s+years?\s+old|date\s+of\s+birth)\b",

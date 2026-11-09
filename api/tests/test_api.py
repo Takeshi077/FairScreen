@@ -82,9 +82,7 @@ def test_runs_list_and_detail(client):
 def test_scores_and_pairs_endpoints(client):
     data = _create_run(client)
     run_id = data["id"]
-    scores = client.get(
-        f"/runs/{run_id}/scores?mitigation=none&attribute=gender&limit=5"
-    ).json()
+    scores = client.get(f"/runs/{run_id}/scores?mitigation=none&attribute=gender&limit=5").json()
     assert scores["total"] == 12
     assert len(scores["items"]) == 5
     assert scores["items"][0]["attribute"] == "gender"

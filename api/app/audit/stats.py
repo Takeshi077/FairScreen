@@ -90,9 +90,7 @@ def repeat_noise_floor(values_by_repeat: Sequence[Sequence[float]]) -> float:
     return float(1.96 * math.sqrt(sum(variances) / len(variances)))
 
 
-def pairwise_accuracy(
-    scores: Sequence[float], tiers: Sequence[int]
-) -> tuple[float, float, int]:
+def pairwise_accuracy(scores: Sequence[float], tiers: Sequence[int]) -> tuple[float, float, int]:
     score_array = np.asarray(scores, dtype=float)
     tier_array = np.asarray(tiers, dtype=float)
     if score_array.size != tier_array.size or score_array.size < 2:

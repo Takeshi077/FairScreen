@@ -110,8 +110,7 @@ def _make_bullets(rng: random.Random, role: str, tier: str) -> tuple[list[str], 
             for verb, obj, metric in zip(verbs, objects, metrics, strict=True)
         ]
         previous = (
-            f"{rng.choice(STRONG_VERBS)} {rng.choice(content['objects'])}, "
-            f"{rng.choice(metrics)}."
+            f"{rng.choice(STRONG_VERBS)} {rng.choice(content['objects'])}, {rng.choice(metrics)}."
         )
         return bullets, previous
     if tier == "average":

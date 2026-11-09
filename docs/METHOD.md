@@ -167,3 +167,4 @@ FairScreen synthesizes its statistical findings into three human-readable conclu
 - **Synthetic Data Exclusivity:** FairScreen operates exclusively on synthetic CV data. No personally identifiable information (PII) or real candidate resumes are ever gathered or processed.
 - **Narrow Inferential Scope:** Findings apply strictly to the evaluated model, prompt version, temperature setting, and synthetic test cohort. FairScreen does not make general claims regarding whether a model provider is "biased in general."
 - **Audit Alert, Not Legal Finding:** A flagged gap or adverse shortlist ratio is a quantitative reason for engineering inspection, not legal proof of discriminatory intent.
+

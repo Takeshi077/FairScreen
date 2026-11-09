@@ -395,4 +395,3 @@ def variant_payload(row: CVVariant, base: BaseCV) -> dict[str, Any]:
         "label": row.label,
         "changed_fields": row.changed_fields,
     }
-
