@@ -153,7 +153,35 @@ Audit evidence:
 
 ## Phase 5
 
-Pending.
+Commands:
+
+```powershell
+.\.venv\Scripts\python.exe -m pytest api/tests/test_api.py -q
+.\.venv\Scripts\python.exe -m pytest -q
+.\.venv\Scripts\python.exe -m ruff check api
+.\.venv\Scripts\python.exe -m mypy
+```
+
+Results:
+
+```text
+API tests: 9 passed
+full suite: 73 passed
+ruff: All checks passed!
+mypy: Success: no issues found in 29 source files
+```
+
+API evidence:
+
+- `POST /runs` creates and optionally executes a run. A small smoke run made 60 CV variants, 120 scores across two mitigations, and audit plus accuracy rows.
+- `GET /runs` and `GET /runs/{id}` return status, provider, settings, counts, model rows and simulated labels.
+- `GET /runs/{id}/progress` reaches 100 percent for a completed run.
+- `GET /runs/{id}/dashboard` returns run metadata, verdict, progress, audits, accuracy, shortlist rows and mitigation labels in one response.
+- `GET /runs/{id}/audits`, `/accuracy`, `/shortlist`, `/scores` and `/pairs` return filtered, paginated data. `pairs` returns matched texts and mean scores for the two selected groups.
+- `GET /runs/{id}/export/csv` returns an attachment with a header row, both audit and accuracy tables, the run id, and a simulated-data response header.
+- `GET /runs/{id}/export/markdown` returns a report with run details, verdict, audit table, accuracy table, method and limits, and a simulated-data notice.
+- Unknown run ids return 404 on every run endpoint. Unknown mitigations return 400.
+- `execute=false` leaves a run pending, and `POST /runs/{id}/execute` completes it and computes audits.
 
 ## Phase 6
 
