@@ -100,13 +100,20 @@ def run_detail_payload(db: Session, run: Run) -> dict[str, Any]:
 
 
 def audit_rows(
-    db: Session, run_id: str, model: str | None, mitigation: str | None
+    db: Session,
+    run_id: str,
+    model: str | None,
+    mitigation: str | None,
+    role: str | None = None,
+    tier: str | None = None,
 ) -> list[AuditResult]:
     statement = select(AuditResult).where(AuditResult.run_id == run_id)
     if model:
         statement = statement.where(AuditResult.model == model)
     if mitigation:
         statement = statement.where(AuditResult.mitigation == mitigation)
+    # role/tier are reserved for future per-slice audit rows; currently ignored
+    # because AuditResult aggregates across all roles and tiers.
     statement = statement.order_by(
         AuditResult.model, AuditResult.mitigation, AuditResult.attribute, AuditResult.group_a
     )

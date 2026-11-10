@@ -45,6 +45,13 @@ class Settings(BaseSettings):
     anthropic_output_price_per_mtok: float = 4.00
     anthropic_max_tokens: int = 400
 
+    gemini_api_key: str | None = None
+    gemini_base_url: str = "https://generativelanguage.googleapis.com/v1beta"
+    gemini_model: str = "gemini-2.0-flash"
+    gemini_input_price_per_mtok: float = 0.075
+    gemini_output_price_per_mtok: float = 0.30
+    gemini_max_tokens: int = 400
+
     model_config = SettingsConfigDict(
         env_file=(str(REPO_ROOT / ".env"), ".env"),
         env_file_encoding="utf-8",

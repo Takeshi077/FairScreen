@@ -55,6 +55,8 @@ export function NewRunModal({ isOpen, onClose, onCreated }: NewRunModalProps) {
       setModelChoice("gpt-4o-mini");
     } else if (nextProvider === "anthropic") {
       setModelChoice("claude-3-5-haiku-latest");
+    } else if (nextProvider === "gemini") {
+      setModelChoice("gemini-2.0-flash");
     }
   }
 
@@ -208,6 +210,7 @@ export function NewRunModal({ isOpen, onClose, onCreated }: NewRunModalProps) {
                 <option value="mock">Simulated Mock (Offline, Free)</option>
                 <option value="openai">OpenAI Compatible (Requires API Key)</option>
                 <option value="anthropic">Anthropic (Requires API Key)</option>
+                <option value="gemini">Google Gemini (Requires API Key)</option>
               </select>
             </div>
           </div>

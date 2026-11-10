@@ -171,9 +171,11 @@ def get_audits(
     db: Session = Depends(get_db),
     model: str | None = Query(default=None),
     mitigation: str | None = Query(default=None),
+    role: str | None = Query(default=None),
+    tier: str | None = Query(default=None),
 ) -> dict[str, object]:
     run = _get_run(db, run_id)
-    rows = audit_rows(db, run.id, model, mitigation)
+    rows = audit_rows(db, run.id, model, mitigation, role, tier)
     return {
         "run_id": run.id,
         "is_simulated": run.is_simulated,
@@ -205,9 +207,11 @@ def get_shortlist(
     db: Session = Depends(get_db),
     model: str | None = Query(default=None),
     mitigation: str | None = Query(default=None),
+    role: str | None = Query(default=None),
+    tier: str | None = Query(default=None),
 ) -> dict[str, object]:
     run = _get_run(db, run_id)
-    rows = audit_rows(db, run.id, model, mitigation)
+    rows = audit_rows(db, run.id, model, mitigation, role, tier)
     return {
         "run_id": run.id,
         "is_simulated": run.is_simulated,
@@ -292,6 +296,8 @@ def get_pairs(
     attribute: str = Query(default="gender"),
     group_a: str | None = Query(default=None),
     group_b: str | None = Query(default=None),
+    role: str | None = Query(default=None),
+    tier: str | None = Query(default=None),
     limit: int = Query(default=50, ge=1, le=200),
     offset: int = Query(default=0, ge=0),
 ) -> dict[str, object]:
@@ -326,6 +332,8 @@ def get_pairs(
             .join(CVVariant, Score.variant_id == CVVariant.id)
             .join(BaseCV, CVVariant.base_cv_id == BaseCV.id)
             .where(Score.run_model_id == run_model.id, CVVariant.attribute == attribute)
+            .where(*([BaseCV.role == role] if role else []))
+            .where(*([BaseCV.tier == tier] if tier else []))
             .group_by(
                 CVVariant.base_cv_id,
                 BaseCV.role,
@@ -340,8 +348,8 @@ def get_pairs(
     lookup: dict[tuple[int, str], dict[str, Any]] = {}
     for (
         base_cv_id,
-        role,
-        tier,
+        row_role,
+        row_tier,
         group_name,
         label,
         variant_id,
@@ -353,8 +361,8 @@ def get_pairs(
             "variant_id": variant_id,
             "text": cv_text,
             "score": float(mean_score),
-            "role": role,
-            "tier": tier,
+            "role": row_role,
+            "tier": row_tier,
         }
     base_ids = sorted(
         {
