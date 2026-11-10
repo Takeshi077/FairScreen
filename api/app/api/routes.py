@@ -171,11 +171,9 @@ def get_audits(
     db: Session = Depends(get_db),
     model: str | None = Query(default=None),
     mitigation: str | None = Query(default=None),
-    role: str | None = Query(default=None),
-    tier: str | None = Query(default=None),
 ) -> dict[str, object]:
     run = _get_run(db, run_id)
-    rows = audit_rows(db, run.id, model, mitigation, role, tier)
+    rows = audit_rows(db, run.id, model, mitigation)
     return {
         "run_id": run.id,
         "is_simulated": run.is_simulated,
@@ -207,11 +205,9 @@ def get_shortlist(
     db: Session = Depends(get_db),
     model: str | None = Query(default=None),
     mitigation: str | None = Query(default=None),
-    role: str | None = Query(default=None),
-    tier: str | None = Query(default=None),
 ) -> dict[str, object]:
     run = _get_run(db, run_id)
-    rows = audit_rows(db, run.id, model, mitigation, role, tier)
+    rows = audit_rows(db, run.id, model, mitigation)
     return {
         "run_id": run.id,
         "is_simulated": run.is_simulated,

@@ -55,4 +55,3 @@ class GeminiProvider(HTTPProvider):
         if isinstance(prompt_tokens, int) and isinstance(output_tokens, int):
             return prompt_tokens, output_tokens
         return None
-

@@ -78,11 +78,21 @@ Seed the database with 198 base CVs, 1,980 variants, and score them across three
 make seed
 ```
 
+On Windows: `powershell -ExecutionPolicy Bypass -File scripts\seed.ps1`
+(add `-Force` to back up and rebuild an existing database).
+
 ### 3. Launch the Application
 
 ```bash
 make dev
 ```
+
+On Windows, the one-command launcher seeds if needed, starts both servers, waits for them to become healthy, and opens the browser:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\dev.ps1
+```
+
 - **Web Dashboard:** [http://localhost:3000](http://localhost:3000)
 - **FastAPI Backend & Swagger Docs:** [http://localhost:8000/docs](http://localhost:8000/docs)
 
@@ -105,7 +115,7 @@ make dev
 
 ---
 
-## Using Real LLMs (OpenAI & Anthropic)
+## Using Real LLMs (OpenAI, Anthropic & Gemini)
 
 To audit live commercial LLMs, copy `.env.example` to `.env` and set your API keys:
 
@@ -115,10 +125,13 @@ cp .env.example .env
 
 ```ini
 FAIRSCREEN_ENV=prod
-LLM_PROVIDER=openai # or anthropic
+LLM_PROVIDER=openai # or anthropic or gemini
 OPENAI_API_KEY=sk-...
 ANTHROPIC_API_KEY=sk-ant-...
+GEMINI_API_KEY=...
 ```
+
+You can also pick the provider per run in the dashboard's Launch New Audit dialog.
 
 Real provider calls include:
 - Automatic token and cost tracking with configurable budget caps (`FAIRSCREEN_BUDGET_USD`).
@@ -148,6 +161,7 @@ FairScreen/
         mock.py             # Deterministic simulated screener with planted bias
         openai_provider.py  # OpenAI-compatible API adapter
         anthropic_provider.py # Anthropic Messages API adapter
+        gemini_provider.py  # Google Gemini generateContent adapter
         cache.py            # SQLite score cache
       audit/
         stats.py            # Bootstrap, permutation, Holm, Cohen's dz, AUC
@@ -161,6 +175,9 @@ FairScreen/
       preview_pairs.py      # CLI tool to inspect matched pair diffs
       dev.py                # Concurrent dev server runner
     tests/                  # 73 unit & integration tests
+  scripts/
+    dev.ps1                 # Windows one-command demo launcher
+    seed.ps1                # Windows demo database seed / rebuild
   web/
     app/                    # Next.js 16 App Router pages
     components/             # Recharts, UI kit, Pair Inspector, Run Launcher
